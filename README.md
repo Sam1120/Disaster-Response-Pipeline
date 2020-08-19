@@ -14,8 +14,8 @@
 
 ### How to run:
 
-python process_data.py disaster_messages.csv disaster_categories.csv YourDataBaseName.db
+python process_data.py disaster_messages.csv disaster_categories.csv YourDatabaseName.db
 
-python train_classifier.py ../data/YourDataBaseName.db classifier.pkl
+python train_classifier.py ../data/YourDatabaseName.db classifier.pkl
 
 python run.py
