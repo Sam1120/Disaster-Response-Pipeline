@@ -20,7 +20,7 @@ import pickle
 def load_data(database_filepath):
     name = 'sqlite:///' + database_filepath
     engine = create_engine(name)
-    df = pd.read_sql_table('Disasters', con=engine) # is table always called this? 
+    df = pd.read_sql_table('dftable', con=engine) # is table always called this? 
     print(df.head())
     X = df['message']
     y = df[df.columns[4:]]
