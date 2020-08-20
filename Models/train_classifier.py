@@ -18,6 +18,7 @@ import pickle
 
 
 def load_data(database_filepath):
+    """Load the filepath and return the data"""
     name = 'sqlite:///' + database_filepath
     engine = create_engine(name)
     df = pd.read_sql_table('dftable', con=engine) # is table always called this? 
@@ -29,6 +30,7 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
+    """tokenize and transform input text. Return cleaned text"""
     url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     detected_urls = re.findall(url_regex, text)
     for url in detected_urls:
@@ -48,6 +50,7 @@ def tokenize(text):
 
 
 def build_model():
+    """Return Grid Search model with pipeline and Classifier"""
     moc = MultiOutputClassifier(RandomForestClassifier())
 
     pipeline = Pipeline([
@@ -64,6 +67,15 @@ def build_model():
 
 
 def evaluate_model(model, X_test, y_test, category_names):
+    """Print model results
+    INPUT
+    model -- required, estimator-object
+    X_test -- required
+    y_test -- required
+    category_names = required, list of category strings
+    OUTPUT
+    None
+    """
     y_pred = model.predict(X_test)
     print(classification_report(y_test, y_pred, target_names=category_names))
     results = pd.DataFrame(columns=['Category', 'f_score', 'precision', 'recall'])
@@ -71,7 +83,8 @@ def evaluate_model(model, X_test, y_test, category_names):
 
 
 def save_model(model, model_filepath):
-     pickle.dump(model, open(model_filepath, 'wb'))
+    """Save model as pickle file"""
+    pickle.dump(model, open(model_filepath, 'wb'))
 
 
 
