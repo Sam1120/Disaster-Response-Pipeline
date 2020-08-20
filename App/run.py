@@ -51,6 +51,8 @@ def index():
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
+    category_names = df.iloc[:,4:].columns
+    category_boolean = (df.iloc[:,4:] != 0).sum().values
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
