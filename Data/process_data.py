@@ -3,12 +3,25 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
+    """Load dataframe from filepaths
+    INPUT
+    messages_filepath -- str, link to file
+    categories_filepath -- str, link to file
+    OUTPUT
+    df - pandas DataFrame
+    """
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     df = messages.merge(categories, on='id')
     return df
 
 def clean_data(df):
+    """Clean data included in the DataFrame and transform categories part
+    INPUT
+    df -- type pandas DataFrame
+    OUTPUT
+    df -- cleaned pandas DataFrame
+    """
     categories = df['categories'].str.split(pat=';', expand=True)
     row = categories.loc[0]
     colnames = []
@@ -30,6 +43,7 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
+  """Saves DataFrame (df) to database path"""
   name = 'sqlite:///' + database_filename
   engine = create_engine(name)
   df.to_sql('dftable', engine, index=False)
@@ -37,6 +51,7 @@ def save_data(df, database_filename):
 
 
 def main():
+    """Runs main functions: Loads the data, cleans it and saves it in a database"""
     if len(sys.argv) == 4:
 
         messages_filepath, categories_filepath, database_filepath = sys.argv[1:]
@@ -58,8 +73,8 @@ def main():
               'datasets as the first and second argument respectively, as '\
               'well as the filepath of the database to save the cleaned data '\
               'to as the third argument. \n\nExample: python process_data.py '\
-              'disaster_messages.csv disaster_categories.csv '\
-              'DisasterResponse.db')
+              'messages.csv categories.csv '\
+              'YourDatabaseName.db')
 
 
 if __name__ == '__main__':
